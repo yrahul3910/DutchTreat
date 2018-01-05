@@ -1,11 +1,20 @@
-﻿console.log("Hello, Pluralsight");
+﻿$(document).ready(() => {
+    console.log("Hello, Pluralsight");
 
-let form = document.getElementById("theForm");
-form.hidden = true;
+    $("#form").hide();
 
-let btn = document.getElementById("buyButton");
-btn.addEventListener("click", (e) => {
-    console.log("Buying Button");
+    $("#buyButton").click((e) => {
+        console.log("Buying Button");
+    });
+
+    $(".product-props li").click(() => {
+        console.log("You clicked " + $(this).text());
+    });
+
+    let $loginToggle = $("#loginToggle");
+    let $popupForm = $(".popup-form");
+
+    $loginToggle.click(() => {
+        $(".popup-form").slideToggle(500);
+    });
 });
-
-let productInfo = document.getElementsByClassName("product-props");
