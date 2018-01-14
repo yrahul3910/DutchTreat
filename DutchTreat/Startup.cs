@@ -4,10 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DutchTreat.Data;
+using DutchTreat.Data.Entities;
 using DutchTreat.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,16 +21,24 @@ namespace DutchTreat
     public class Startup
     {
         private readonly IConfiguration _config;
+        private readonly IHostingEnvironment _env;
 
-        public Startup(IConfiguration config)
+        public Startup(IConfiguration config, IHostingEnvironment env)
         {
             _config = config;
+            _env = env;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<StoreUser, IdentityRole>(config =>
+            {
+                config.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<DutchContext>();
+
             services.AddDbContext<DutchContext>(config =>
             {
                 config.UseSqlServer(_config.GetConnectionString("DutchConnectionString"));
@@ -37,8 +48,14 @@ namespace DutchTreat
             services.AddTransient<IMailService, NullMailService>();
             services.AddScoped<IDutchRepository, DutchRepository>();
             services.AddTransient<DutchSeeder>();
-            services.AddMvc()
-                    .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            services.AddMvc(opt =>
+            {
+                if (_env.IsProduction())
+                {
+                    opt.Filters.Add(new RequireHttpsAttribute());
+                }
+            })
+            .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +70,7 @@ namespace DutchTreat
                 app.UseExceptionHandler("/error");
             }
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseMvc(config =>
             {
                 config.MapRoute("Default", 
@@ -65,7 +83,7 @@ namespace DutchTreat
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
                     var seeder = scope.ServiceProvider.GetService<DutchSeeder>();
-                    seeder.Seed();
+                    seeder.Seed().Wait();
                 }
             }
         }
