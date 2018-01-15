@@ -6,6 +6,8 @@ using AutoMapper;
 using DutchTreat.Data;
 using DutchTreat.Data.Entities;
 using DutchTreat.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Logging;
 namespace DutchTreat.Controllers
 {
     [Route("api/Orders/{id}/Items")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class OrderItemsController : Controller
     {
         private readonly IDutchRepository _repository;
@@ -31,7 +34,7 @@ namespace DutchTreat.Controllers
         [HttpGet]
         public IActionResult Get(int id)
         {
-            var order = _repository.GetOrderById(id);
+            var order = _repository.GetOrderById(User.Identity.Name, id);
             if (order != null)
                 return Ok(_mapper.Map<IEnumerable<OrderItem>, IEnumerable<OrderItemModel>>(order.Items));
             return NotFound();
@@ -40,7 +43,7 @@ namespace DutchTreat.Controllers
         [HttpGet("{itemId}")]
         public IActionResult Get(int id, int itemId)
         {
-            var order = _repository.GetOrderById(id);
+            var order = _repository.GetOrderById(User.Identity.Name, id);
             if (order != null)
             {
                 var item = order.Items.Where(i => i.Id == itemId).FirstOrDefault();
