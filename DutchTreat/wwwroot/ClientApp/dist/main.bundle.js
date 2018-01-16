@@ -20,7 +20,7 @@ webpackEmptyAsyncContext.id = "../../../../../ClientApp/$$_lazy_route_resource l
 /***/ "../../../../../ClientApp/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n    <div class=\"col-md-9\">\r\n        <h3>{{ title }}</h3>\r\n    </div>\r\n    <div class=\"col-md-3\">\r\n        <div class=\"well well-sm\">\r\n            <h3>Cart</h3>\r\n        </div>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"row\">\r\n    <div class=\"col-md-9\">\r\n        <h3>{{ title }}</h3>\r\n        <product-list></product-list>\r\n    </div>\r\n    <div class=\"col-md-3\">\r\n        <div class=\"well well-sm\">\r\n            <h3>Cart</h3>\r\n        </div>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -70,13 +70,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var platform_browser_1 = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
 var app_component_1 = __webpack_require__("../../../../../ClientApp/app/app.component.ts");
+var productList_component_1 = __webpack_require__("../../../../../ClientApp/app/shop/productList.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
             declarations: [
-                app_component_1.AppComponent
+                app_component_1.AppComponent,
+                productList_component_1.ProductList
             ],
             imports: [
                 platform_browser_1.BrowserModule
@@ -88,6 +90,55 @@ var AppModule = /** @class */ (function () {
     return AppModule;
 }());
 exports.AppModule = AppModule;
+
+
+/***/ }),
+
+/***/ "../../../../../ClientApp/app/shop/productList.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row\">\r\n    <ul>\r\n        <li *ngFor=\"let p of products\">{{ p.title }}: {{ p.price | currency:\"USD\":true }}</li>\r\n    </ul>\r\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../ClientApp/app/shop/productList.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var ProductList = /** @class */ (function () {
+    function ProductList() {
+        this.products = [{
+                title: "First Product",
+                price: 19.99
+            },
+            {
+                title: "Second Product",
+                price: 9.99
+            },
+            {
+                title: "Third Product",
+                price: 14.99
+            }];
+    }
+    ProductList = __decorate([
+        core_1.Component({
+            selector: "product-list",
+            template: __webpack_require__("../../../../../ClientApp/app/shop/productList.component.html"),
+            styleUrls: []
+        })
+    ], ProductList);
+    return ProductList;
+}());
+exports.ProductList = ProductList;
 
 
 /***/ }),
