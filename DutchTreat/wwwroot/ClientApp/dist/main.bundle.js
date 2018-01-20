@@ -1,6 +1,6 @@
 webpackJsonp(["main"],{
 
-/***/ "../../../../../ClientApp/$$_lazy_route_resource lazy recursive":
+/***/ "../../../../../ClientApp/$$_gendir lazy recursive":
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -13,7 +13,7 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = "../../../../../ClientApp/$$_lazy_route_resource lazy recursive";
+webpackEmptyAsyncContext.id = "../../../../../ClientApp/$$_gendir lazy recursive";
 
 /***/ }),
 
@@ -36,22 +36,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var AppComponent = /** @class */ (function () {
+var core_1 = __webpack_require__("../../../core/@angular/core.es5.js");
+var AppComponent = (function () {
     function AppComponent() {
         this.title = 'Product List';
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            selector: 'the-shop',
-            template: __webpack_require__("../../../../../ClientApp/app/app.component.html"),
-            styles: []
-        })
-    ], AppComponent);
     return AppComponent;
 }());
+AppComponent = __decorate([
+    core_1.Component({
+        selector: 'the-shop',
+        template: __webpack_require__("../../../../../ClientApp/app/app.component.html"),
+        styles: []
+    })
+], AppComponent);
 exports.AppComponent = AppComponent;
-
+//# sourceMappingURL=app.component.js.map
 
 /***/ }),
 
@@ -67,30 +67,78 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var platform_browser_1 = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var platform_browser_1 = __webpack_require__("../../../platform-browser/@angular/platform-browser.es5.js");
+var core_1 = __webpack_require__("../../../core/@angular/core.es5.js");
+var http_1 = __webpack_require__("../../../common/@angular/common/http.es5.js");
 var app_component_1 = __webpack_require__("../../../../../ClientApp/app/app.component.ts");
 var productList_component_1 = __webpack_require__("../../../../../ClientApp/app/shop/productList.component.ts");
-var AppModule = /** @class */ (function () {
+var dataService_1 = __webpack_require__("../../../../../ClientApp/app/shared/dataService.ts");
+var AppModule = (function () {
     function AppModule() {
     }
-    AppModule = __decorate([
-        core_1.NgModule({
-            declarations: [
-                app_component_1.AppComponent,
-                productList_component_1.ProductList
-            ],
-            imports: [
-                platform_browser_1.BrowserModule
-            ],
-            providers: [],
-            bootstrap: [app_component_1.AppComponent]
-        })
-    ], AppModule);
     return AppModule;
 }());
+AppModule = __decorate([
+    core_1.NgModule({
+        declarations: [
+            app_component_1.AppComponent,
+            productList_component_1.ProductList
+        ],
+        imports: [
+            platform_browser_1.BrowserModule,
+            http_1.HttpClientModule
+        ],
+        providers: [
+            dataService_1.DataService
+        ],
+        bootstrap: [app_component_1.AppComponent]
+    })
+], AppModule);
 exports.AppModule = AppModule;
+//# sourceMappingURL=app.module.js.map
 
+/***/ }),
+
+/***/ "../../../../../ClientApp/app/shared/dataService.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var http_1 = __webpack_require__("../../../common/@angular/common/http.es5.js");
+var core_1 = __webpack_require__("../../../core/@angular/core.es5.js");
+__webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
+var DataService = (function () {
+    function DataService(http) {
+        this.http = http;
+        this.products = [];
+    }
+    DataService.prototype.loadProducts = function () {
+        var _this = this;
+        return this.http.get("/api/products")
+            .map(function (res) {
+            _this.products = res;
+            return res;
+        });
+    };
+    return DataService;
+}());
+DataService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [typeof (_a = typeof http_1.HttpClient !== "undefined" && http_1.HttpClient) === "function" && _a || Object])
+], DataService);
+exports.DataService = DataService;
+var _a;
+//# sourceMappingURL=dataService.js.map
 
 /***/ }),
 
@@ -112,34 +160,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var ProductList = /** @class */ (function () {
-    function ProductList() {
-        this.products = [{
-                title: "First Product",
-                price: 19.99
-            },
-            {
-                title: "Second Product",
-                price: 9.99
-            },
-            {
-                title: "Third Product",
-                price: 14.99
-            }];
+var core_1 = __webpack_require__("../../../core/@angular/core.es5.js");
+var dataService_1 = __webpack_require__("../../../../../ClientApp/app/shared/dataService.ts");
+var ProductList = (function () {
+    function ProductList(data) {
+        this.data = data;
+        this.products = [];
+        this.products = data.products;
     }
-    ProductList = __decorate([
-        core_1.Component({
-            selector: "product-list",
-            template: __webpack_require__("../../../../../ClientApp/app/shop/productList.component.html"),
-            styleUrls: []
-        })
-    ], ProductList);
+    ProductList.prototype.ngOnInit = function () {
+        var _this = this;
+        this.data.loadProducts()
+            .subscribe(function () {
+            _this.products = _this.data.products;
+        });
+    };
     return ProductList;
 }());
+ProductList = __decorate([
+    core_1.Component({
+        selector: "product-list",
+        template: __webpack_require__("../../../../../ClientApp/app/shop/productList.component.html"),
+        styleUrls: []
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof dataService_1.DataService !== "undefined" && dataService_1.DataService) === "function" && _a || Object])
+], ProductList);
 exports.ProductList = ProductList;
-
+var _a;
+//# sourceMappingURL=productList.component.js.map
 
 /***/ }),
 
@@ -156,7 +208,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.environment = {
     production: false
 };
-
+//# sourceMappingURL=environment.js.map
 
 /***/ }),
 
@@ -166,8 +218,8 @@ exports.environment = {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var platform_browser_dynamic_1 = __webpack_require__("../../../platform-browser-dynamic/esm5/platform-browser-dynamic.js");
+var core_1 = __webpack_require__("../../../core/@angular/core.es5.js");
+var platform_browser_dynamic_1 = __webpack_require__("../../../platform-browser-dynamic/@angular/platform-browser-dynamic.es5.js");
 var app_module_1 = __webpack_require__("../../../../../ClientApp/app/app.module.ts");
 var environment_1 = __webpack_require__("../../../../../ClientApp/environments/environment.ts");
 if (environment_1.environment.production) {
@@ -175,7 +227,7 @@ if (environment_1.environment.production) {
 }
 platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule)
     .catch(function (err) { return console.log(err); });
-
+//# sourceMappingURL=main.js.map
 
 /***/ }),
 

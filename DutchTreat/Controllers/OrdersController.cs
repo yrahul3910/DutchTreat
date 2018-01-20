@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DutchTreat.Controllers
 {
-    [Route("api/[Controller]")]
+    [Route("api/Orders")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class OrdersController : Controller
     {

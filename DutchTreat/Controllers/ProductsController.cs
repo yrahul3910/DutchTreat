@@ -14,9 +14,9 @@ namespace DutchTreat.Controllers
     public class ProductsController : Controller
     {
         private readonly ILogger<ProductsController> _logger;
-        private readonly DutchRepository _repository;
+        private readonly IDutchRepository _repository;
 
-        public ProductsController(DutchRepository repository, ILogger<ProductsController> logger)
+        public ProductsController(IDutchRepository repository, ILogger<ProductsController> logger)
         {
             _repository = repository;
             _logger = logger;
