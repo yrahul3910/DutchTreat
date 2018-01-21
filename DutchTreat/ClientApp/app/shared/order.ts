@@ -15,4 +15,8 @@ export class Order {
     orderDate: Date = new Date();
     orderNumber: string;
     items: Array<OrderItem> = new Array<OrderItem>();
+
+    get subtotal(): number {
+        return this.items.reduce((acc, val) => acc + (val.quantity * val.unitPrice), 0);
+    }
 }
