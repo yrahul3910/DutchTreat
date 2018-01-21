@@ -5,7 +5,7 @@ import { Product } from "../shared/product";
 @Component({
     selector: "product-list",
     templateUrl: "productList.component.html",
-    styleUrls: []
+    styleUrls: [ "productList.component.css" ]
 })
 export class ProductList implements OnInit {
     constructor(private data: DataService) {
@@ -18,6 +18,11 @@ export class ProductList implements OnInit {
         this.data.loadProducts()
             .subscribe(() => {
                 this.products = this.data.products;
+                console.log(this.products);
         });
+    }
+
+    addProduct(p: Product) {
+        this.data.addToOrder(p);
     }
 }

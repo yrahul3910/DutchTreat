@@ -18,8 +18,12 @@ var DataService = /** @class */ (function () {
         this.products = [];
     }
     DataService.prototype.loadProducts = function () {
+        var _this = this;
         return this.http.get("/api/products")
-            .toArray();
+            .map(function (res) {
+            _this.products = res;
+            return res;
+        });
     };
     DataService = __decorate([
         core_1.Injectable(),
