@@ -47,4 +47,17 @@ export class DataService {
     public get loginRequired(): boolean {
         return this.token.length == 0 || this.tokenExpiration > new Date();
     }
+
+    public login(creds): Observable<boolean> {
+        return this.http.post("/account/createtoken", creds)
+            .map((response: any) => {
+                let tokenInfo = response;
+                //response.json().then(val => tokenInfo = val).catch(console.log);
+                this.token = tokenInfo.token;
+                console.log(this.token);
+                this.tokenExpiration = tokenInfo.expiration;
+
+                return true;
+            }) as any;
+    }
 }
