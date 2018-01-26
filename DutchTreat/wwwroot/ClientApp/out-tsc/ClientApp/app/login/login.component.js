@@ -11,31 +11,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var dataService_1 = require("../shared/dataService");
-var ProductList = /** @class */ (function () {
-    function ProductList(data) {
+var router_1 = require("@angular/router");
+var Login = /** @class */ (function () {
+    function Login(data, router) {
         this.data = data;
-        this.products = [];
-        this.products = data.products;
+        this.router = router;
+        this.creds = {
+            username: "",
+            password: ""
+        };
     }
-    ProductList.prototype.ngOnInit = function () {
-        var _this = this;
-        this.data.loadProducts()
-            .subscribe(function () {
-            _this.products = _this.data.products;
-        });
+    Login.prototype.onLogin = function () {
     };
-    ProductList.prototype.addProduct = function (p) {
-        this.data.addToOrder(p);
-    };
-    ProductList = __decorate([
+    Login = __decorate([
         core_1.Component({
-            selector: "product-list",
-            templateUrl: "productList.component.html",
-            styleUrls: ["productList.component.css"]
+            selector: "login",
+            templateUrl: "login.component.html"
         }),
-        __metadata("design:paramtypes", [dataService_1.DataService])
-    ], ProductList);
-    return ProductList;
+        __metadata("design:paramtypes", [dataService_1.DataService, router_1.Router])
+    ], Login);
+    return Login;
 }());
-exports.ProductList = ProductList;
-//# sourceMappingURL=productList.component.js.map
+exports.Login = Login;
+//# sourceMappingURL=login.component.js.map

@@ -1,6 +1,5 @@
 ﻿import { Component } from "@angular/core";
 import { DataService } from '../shared/dataService';
-import { Router } from "@angular/router";
 
 @Component({
     selector: "checkout",
@@ -10,9 +9,5 @@ import { Router } from "@angular/router";
 export class Checkout {
 
     constructor(public data: DataService) {
-    }
-  
-    onCheckout() {
-      
     }
 }

@@ -11,31 +11,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var dataService_1 = require("../shared/dataService");
-var ProductList = /** @class */ (function () {
-    function ProductList(data) {
+var Checkout = /** @class */ (function () {
+    function Checkout(data) {
         this.data = data;
-        this.products = [];
-        this.products = data.products;
     }
-    ProductList.prototype.ngOnInit = function () {
-        var _this = this;
-        this.data.loadProducts()
-            .subscribe(function () {
-            _this.products = _this.data.products;
-        });
-    };
-    ProductList.prototype.addProduct = function (p) {
-        this.data.addToOrder(p);
-    };
-    ProductList = __decorate([
+    Checkout = __decorate([
         core_1.Component({
-            selector: "product-list",
-            templateUrl: "productList.component.html",
-            styleUrls: ["productList.component.css"]
+            selector: "checkout",
+            templateUrl: "checkout.component.html",
+            styleUrls: ["checkout.component.css"]
         }),
         __metadata("design:paramtypes", [dataService_1.DataService])
-    ], ProductList);
-    return ProductList;
+    ], Checkout);
+    return Checkout;
 }());
-exports.ProductList = ProductList;
-//# sourceMappingURL=productList.component.js.map
+exports.Checkout = Checkout;
+//# sourceMappingURL=checkout.component.js.map

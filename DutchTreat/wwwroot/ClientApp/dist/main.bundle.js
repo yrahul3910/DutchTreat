@@ -71,15 +71,18 @@ var platform_browser_1 = __webpack_require__("../../../platform-browser/@angular
 var core_1 = __webpack_require__("../../../core/@angular/core.es5.js");
 var http_1 = __webpack_require__("../../../common/@angular/common/http.es5.js");
 var router_1 = __webpack_require__("../../../router/@angular/router.es5.js");
+var forms_1 = __webpack_require__("../../../forms/@angular/forms.es5.js");
 var app_component_1 = __webpack_require__("../../../../../ClientApp/app/app.component.ts");
 var productList_component_1 = __webpack_require__("../../../../../ClientApp/app/shop/productList.component.ts");
 var shop_component_1 = __webpack_require__("../../../../../ClientApp/app/shop/shop.component.ts");
+var login_component_1 = __webpack_require__("../../../../../ClientApp/app/login/login.component.ts");
 var checkout_component_1 = __webpack_require__("../../../../../ClientApp/app/checkout/checkout.component.ts");
 var dataService_1 = __webpack_require__("../../../../../ClientApp/app/shared/dataService.ts");
 var cart_component_1 = __webpack_require__("../../../../../ClientApp/app/shop/cart.component.ts");
 var routes = [
     { path: "", component: shop_component_1.Shop },
-    { path: "checkout", component: checkout_component_1.Checkout }
+    { path: "checkout", component: checkout_component_1.Checkout },
+    { path: "login", component: login_component_1.Login }
 ];
 var AppModule = (function () {
     function AppModule() {
@@ -93,15 +96,17 @@ AppModule = __decorate([
             productList_component_1.ProductList,
             cart_component_1.Cart,
             shop_component_1.Shop,
-            checkout_component_1.Checkout
+            checkout_component_1.Checkout,
+            login_component_1.Login
         ],
         imports: [
             platform_browser_1.BrowserModule,
             http_1.HttpClientModule,
+            forms_1.FormsModule,
             router_1.RouterModule.forRoot(routes, {
                 useHash: true,
                 enableTracing: false
-            })
+            }),
         ],
         providers: [
             dataService_1.DataService
@@ -160,8 +165,6 @@ var Checkout = (function () {
     function Checkout(data) {
         this.data = data;
     }
-    Checkout.prototype.onCheckout = function () {
-    };
     return Checkout;
 }());
 Checkout = __decorate([
@@ -175,6 +178,57 @@ Checkout = __decorate([
 exports.Checkout = Checkout;
 var _a;
 //# sourceMappingURL=checkout.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../ClientApp/app/login/login.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-md-4 col-md-offset-4\">\r\n    <form (submit)=\"onLogin()\">\r\n      <div class=\"form-group\">\r\n        <label for=\"username\">Username</label>\r\n        <input type=\"text\" class=\"form-control\" name=\"username\" [(ngModel)]=\"creds.username\" />\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <label for=\"password\">Password</label>\r\n        <input type=\"password\" class=\"form-control\" name=\"password\" [(ngModel)]=\"creds.password\" />\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\" class=\"btn btn-success\" value=\"Login\"  />\r\n        <a routerLink=\"/\" class=\"btn btn-default\">Cancel</a>\r\n      </div>\r\n    </form>\r\n  </div>\r\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../ClientApp/app/login/login.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/@angular/core.es5.js");
+var dataService_1 = __webpack_require__("../../../../../ClientApp/app/shared/dataService.ts");
+var router_1 = __webpack_require__("../../../router/@angular/router.es5.js");
+var Login = (function () {
+    function Login(data, router) {
+        this.data = data;
+        this.router = router;
+        this.creds = {
+            username: "",
+            password: ""
+        };
+    }
+    Login.prototype.onLogin = function () {
+    };
+    return Login;
+}());
+Login = __decorate([
+    core_1.Component({
+        selector: "login",
+        template: __webpack_require__("../../../../../ClientApp/app/login/login.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof dataService_1.DataService !== "undefined" && dataService_1.DataService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
+], Login);
+exports.Login = Login;
+var _a, _b;
+//# sourceMappingURL=login.component.js.map
 
 /***/ }),
 
@@ -200,6 +254,7 @@ var order_1 = __webpack_require__("../../../../../ClientApp/app/shared/order.ts"
 var DataService = (function () {
     function DataService(http) {
         this.http = http;
+        this.token = "";
         this.products = [];
         this.order = new order_1.Order();
     }
@@ -229,6 +284,13 @@ var DataService = (function () {
             this.order.items.push(item);
         }
     };
+    Object.defineProperty(DataService.prototype, "loginRequired", {
+        get: function () {
+            return this.token.length == 0 || this.tokenExpiration > new Date();
+        },
+        enumerable: true,
+        configurable: true
+    });
     return DataService;
 }());
 DataService = __decorate([
@@ -275,7 +337,7 @@ exports.Order = Order;
 /***/ "../../../../../ClientApp/app/shop/cart.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h3>Shopping Cart</h3>\r\n<div>Count: {{ data.order.items.length }}</div>\r\n<div>Subtotal: {{ data.order.subtotal | currency:\"USD\":true }}</div>\r\n<table class=\"table table-condensed table-hover\">\r\n    <thead>\r\n        <tr>\r\n            <td>Product</td>\r\n            <td>#</td>\r\n            <td>$</td>\r\n            <td>Total</td>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n        <tr *ngFor=\"let o of data.order.items\">\r\n            <td>{{ o.productCategory }} - {{ o.productTitle }}</td>\r\n            <td>{{ o.quantity }}</td>\r\n            <td>{{ o.unitPrice | currency:\"USD\":true }}</td>\r\n            <td>{{ (o.unitPrice * o.quantity) | currency:\"USD\":true }}</td>\r\n        </tr>\r\n    </tbody>\r\n</table>\r\n<a routerLink=\"checkout\" class=\"btn btn-success\" *ngIf=\"data.order.items.length > 0\">Checkout</a>"
+module.exports = "<h3>Shopping Cart</h3>\r\n<div>Count: {{ data.order.items.length }}</div>\r\n<div>Subtotal: {{ data.order.subtotal | currency:\"USD\":true }}</div>\r\n<table class=\"table table-condensed table-hover\">\r\n    <thead>\r\n        <tr>\r\n            <td>Product</td>\r\n            <td>#</td>\r\n            <td>$</td>\r\n            <td>Total</td>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n        <tr *ngFor=\"let o of data.order.items\">\r\n            <td>{{ o.productCategory }} - {{ o.productTitle }}</td>\r\n            <td>{{ o.quantity }}</td>\r\n            <td>{{ o.unitPrice | currency:\"USD\":true }}</td>\r\n            <td>{{ (o.unitPrice * o.quantity) | currency:\"USD\":true }}</td>\r\n        </tr>\r\n    </tbody>\r\n</table>\r\n<button class=\"btn btn-success\" *ngIf=\"data.order.items.length > 0\" (click)=\"onCheckout()\">Checkout</button>"
 
 /***/ }),
 
@@ -296,10 +358,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/@angular/core.es5.js");
 var dataService_1 = __webpack_require__("../../../../../ClientApp/app/shared/dataService.ts");
+var router_1 = __webpack_require__("../../../router/@angular/router.es5.js");
 var Cart = (function () {
-    function Cart(data) {
+    function Cart(data, router) {
         this.data = data;
+        this.router = router;
     }
+    Cart.prototype.onCheckout = function () {
+        if (this.data.loginRequired) {
+            this.router.navigate(["login"]);
+        }
+        else {
+            this.router.navigate(["checkout"]);
+        }
+    };
     return Cart;
 }());
 Cart = __decorate([
@@ -308,10 +380,10 @@ Cart = __decorate([
         template: __webpack_require__("../../../../../ClientApp/app/shop/cart.component.html"),
         styleUrls: []
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof dataService_1.DataService !== "undefined" && dataService_1.DataService) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof dataService_1.DataService !== "undefined" && dataService_1.DataService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
 ], Cart);
 exports.Cart = Cart;
-var _a;
+var _a, _b;
 //# sourceMappingURL=cart.component.js.map
 
 /***/ }),
@@ -369,7 +441,6 @@ var ProductList = (function () {
         this.data.loadProducts()
             .subscribe(function () {
             _this.products = _this.data.products;
-            console.log(_this.products);
         });
     };
     ProductList.prototype.addProduct = function (p) {
