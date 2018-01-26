@@ -161,10 +161,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/@angular/core.es5.js");
 var dataService_1 = __webpack_require__("../../../../../ClientApp/app/shared/dataService.ts");
+var router_1 = __webpack_require__("../../../router/@angular/router.es5.js");
 var Checkout = (function () {
-    function Checkout(data) {
+    function Checkout(data, router) {
         this.data = data;
+        this.router = router;
+        this.errorMessage = "";
     }
+    Checkout.prototype.onCheckout = function () {
+        var _this = this;
+        this.data.checkout()
+            .subscribe(function (success) {
+            if (success) {
+                _this.router.navigate(["/"]);
+            }
+        }, function (err) { return _this.errorMessage = "Failed to save order"; });
+    };
     return Checkout;
 }());
 Checkout = __decorate([
@@ -173,10 +185,10 @@ Checkout = __decorate([
         template: __webpack_require__("../../../../../ClientApp/app/checkout/checkout.component.html"),
         styles: [__webpack_require__("../../../../../ClientApp/app/checkout/checkout.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof dataService_1.DataService !== "undefined" && dataService_1.DataService) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof dataService_1.DataService !== "undefined" && dataService_1.DataService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
 ], Checkout);
 exports.Checkout = Checkout;
-var _a;
+var _a, _b;
 //# sourceMappingURL=checkout.component.js.map
 
 /***/ }),
@@ -313,6 +325,20 @@ var DataService = (function () {
             _this.token = tokenInfo.token;
             console.log(_this.token);
             _this.tokenExpiration = tokenInfo.expiration;
+            return true;
+        });
+    };
+    DataService.prototype.checkout = function () {
+        var _this = this;
+        if (!this.order.orderNumber) {
+            this.order.orderNumber = this.order.orderDate.getFullYear().toString() +
+                this.order.orderDate.getTime().toString();
+        }
+        return this.http.post("/api/orders", this.order, {
+            headers: new http_1.HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
+            .map(function (response) {
+            _this.order = new order_1.Order();
             return true;
         });
     };

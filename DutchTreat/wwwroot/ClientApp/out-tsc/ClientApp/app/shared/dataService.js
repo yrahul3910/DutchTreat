@@ -53,6 +53,32 @@ var DataService = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    DataService.prototype.login = function (creds) {
+        var _this = this;
+        return this.http.post("/account/createtoken", creds)
+            .map(function (response) {
+            var tokenInfo = response;
+            //response.json().then(val => tokenInfo = val).catch(console.log);
+            _this.token = tokenInfo.token;
+            console.log(_this.token);
+            _this.tokenExpiration = tokenInfo.expiration;
+            return true;
+        });
+    };
+    DataService.prototype.checkout = function () {
+        var _this = this;
+        if (!this.order.orderNumber) {
+            this.order.orderNumber = this.order.orderDate.getFullYear().toString() +
+                this.order.orderDate.getTime().toString();
+        }
+        return this.http.post("/api/orders", this.order, {
+            headers: new http_1.HttpHeaders({ "Authorization": "Bearer " + this.token })
+        })
+            .map(function (response) {
+            _this.order = new order_1.Order();
+            return true;
+        });
+    };
     DataService = __decorate([
         core_1.Injectable(),
         __metadata("design:paramtypes", [http_1.HttpClient])
