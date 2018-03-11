@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <TypeScriptToolsVersion>2.5</TypeScriptToolsVersion>
+    <RuntimeIdentifiers>win10-x64,OSX.10.10-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,5 +47,12 @@
     <TypeScriptCompile Include="wwwroot\ts\main.ts" />
     <TypeScriptCompile Include="wwwroot\ts\storecustomer.ts" />
   </ItemGroup>
+  
+  <Target Name="PublishScripts" BeforeTargets="BeforePublish">
+    <Exec Command="npm i" />
+    <Exec Command="bower install" />
+    <Exec Command="gulp" />
+    <Exec Command="ng build" />
+  </Target>
 
 </Project>
